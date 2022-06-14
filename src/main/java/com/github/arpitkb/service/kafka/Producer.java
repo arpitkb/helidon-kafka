@@ -3,6 +3,7 @@ package com.github.arpitkb.service.kafka;
 import com.github.arpitkb.service.model.NodeInstance;
 import com.github.arpitkb.service.model.NodeStatus;
 import com.github.arpitkb.service.serdes.JsonSerializer;
+import io.helidon.config.Config;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -13,15 +14,16 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 
 public class Producer {
+    static Config config;
+    static String topic =  config.get("kafka.input-topic").asString().get();
+    static Logger logger = LoggerFactory.getLogger(Producer.class);
 
     public static void main(String[] args) {
-        String topic = "helidon-input02";
-        Logger logger = LoggerFactory.getLogger(Producer.class);
 
 
         Properties properties = new Properties();
 
-        properties.putIfAbsent(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG , "localhost:9092");
+        properties.putIfAbsent(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG , config.get("kafka.broker").asString().get());
         properties.putIfAbsent(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.putIfAbsent(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName());
 

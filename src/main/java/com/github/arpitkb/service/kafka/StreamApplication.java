@@ -5,6 +5,7 @@ package com.github.arpitkb.service.kafka;
 import com.github.arpitkb.service.model.NodeInstance;
 import com.github.arpitkb.service.model.Stats;
 import com.github.arpitkb.service.serdes.JsonSerdes;
+import io.helidon.config.Config;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -23,6 +24,7 @@ public class StreamApplication{
 
     static KafkaStreams kafkaStreams;
     static CountDownLatch latch;
+    Config config;
 
     StreamApplication(){}
 
@@ -30,12 +32,12 @@ public class StreamApplication{
     private void init() {
 
         Logger logger = LoggerFactory.getLogger(StreamApplication.class);
-        final String inputTopic = "helidon-input02";
-        final String outputTopic = "helidon-output02";
+        final String inputTopic = config.get("kafka.input-topic").asString().get();
+        final String outputTopic = config.get("kafka.output-topic").asString().get();
 
         Properties props = new Properties();
-        props.putIfAbsent(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG,"localhost:9092");
-        props.putIfAbsent(StreamsConfig.APPLICATION_ID_CONFIG,"helidon-stream-01");
+        props.putIfAbsent(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG,config.get("kafka.broker").asString().get());
+        props.putIfAbsent(StreamsConfig.APPLICATION_ID_CONFIG,config.get("kafka.stream.application-id").asString().get());
 
         final StreamsBuilder builder = new StreamsBuilder();
         KStream<String, NodeInstance> input = builder.stream(inputTopic, Consumed.with(JsonSerdes.String(), JsonSerdes.NodeInstance()));

@@ -3,8 +3,9 @@ kafka:
   input-topic: input-naruto
   output-topic: output-topic
   stream:
-    group: group-1
     application-id: streams_01
+  consumer:
+    group: group-1
 
 
 server:
