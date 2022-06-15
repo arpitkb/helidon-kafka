@@ -1,0 +1,13 @@
+kafka:
+  broker: "localhost:9092"
+  input-topic: "helidon-input01"
+  output-topic: "helidon-output01"
+  stream:
+    application-id: "helidon-stream01"
+  consumer:
+    group: "helidon-group01"
+
+
+server:
+  port: 8080
+  host: 0.0.0.0

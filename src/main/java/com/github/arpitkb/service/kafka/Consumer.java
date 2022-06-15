@@ -1,7 +1,10 @@
 package com.github.arpitkb.service.kafka;
 
+import com.github.arpitkb.service.model.NodeInstance;
 import com.github.arpitkb.service.model.Stats;
+import com.github.arpitkb.service.serdes.ConsumerDeserializer;
 import com.github.arpitkb.service.serdes.JsonDeserializer;
+import com.github.arpitkb.service.serdes.JsonSerializer;
 import io.helidon.config.Config;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -13,7 +16,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,16 +27,15 @@ public class Consumer {
 
     @Inject @ConfigProperty(name="kafka.broker")
     String broker;
-    @Inject @ConfigProperty(name="kafka.topic")
+    @Inject @ConfigProperty(name="kafka.output-topic")
     String topic;
-    @Inject @ConfigProperty(name = "kafka.group")
+    @Inject @ConfigProperty(name = "kafka.consumer.group")
     String group;
 
-    Config config;
 
     KafkaConsumer<String, Stats> consumer;
 
-    Logger logger = Logger.getLogger(this.getClass().getName());
+//    Logger logger = Logger.getLogger(this.getClass().getName());
 
     public Consumer(){
     }
@@ -44,17 +45,18 @@ public class Consumer {
 
         // set the properties
         Properties properties = new Properties();
-        properties.putIfAbsent(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,config.get("kafka.broker").asString().get());
+        properties.putIfAbsent(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,broker);
         properties.putIfAbsent(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG , StringDeserializer.class.getName());
-        properties.putIfAbsent(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG , JsonDeserializer.class.getName() );
-        properties.putIfAbsent(ConsumerConfig.GROUP_ID_CONFIG,config.get("kafka.consumer.group").asString().get());
+        properties.putIfAbsent(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG , ConsumerDeserializer.class.getName());
+        properties.putIfAbsent(ConsumerDeserializer.CONFIG_VALUE_CLASS , Stats.class.getName());
+        properties.putIfAbsent(ConsumerConfig.GROUP_ID_CONFIG,group);
         properties.putIfAbsent(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         consumer = new KafkaConsumer<>(properties);
 
 
         // subscribe
-        consumer.subscribe(Arrays.asList(config.get("kafka.input-topic").asString().get()));
+        consumer.subscribe(Arrays.asList(topic));
 
     }
 

@@ -5,50 +5,22 @@ import com.github.arpitkb.service.model.Stats;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 
-import java.util.HashMap;
-import java.util.Map;
+public class JsonSerdes extends Serdes{
 
-/**
- * Factory class for Serdes
- *
- * @author prashant
- * @author www.learningjournal.guru
- */
+    private JsonSerdes(){}
 
-public class JsonSerdes extends Serdes {
+    public static Serde<NodeInstance> NodeInstance(){
+        JsonSerializer<NodeInstance> serializer = new JsonSerializer<>();
+        JsonDeserializer<NodeInstance> deserializer = new JsonDeserializer<>(NodeInstance.class);
 
-
-    static final class NodeInstanceSerde extends Serdes.WrapperSerde<NodeInstance> {
-        NodeInstanceSerde() {
-            super(new JsonSerializer<>(), new JsonDeserializer<>());
-        }
+        return Serdes.serdeFrom(serializer,deserializer);
     }
 
-    public static Serde<NodeInstance> NodeInstance() {
-        NodeInstanceSerde serde = new NodeInstanceSerde();
+    public static Serde<Stats> Stats(){
+        JsonSerializer<Stats> serializer = new JsonSerializer<>();
+        JsonDeserializer<Stats> deserializer = new JsonDeserializer<>(Stats.class);
 
-        Map<String, Object> serdeConfigs = new HashMap<>();
-        serdeConfigs.put(JsonDeserializer.VALUE_CLASS_NAME_CONFIG, NodeInstance.class);
-        serde.configure(serdeConfigs, false);
-
-        return serde;
+        return Serdes.serdeFrom(serializer,deserializer);
     }
-
-    static final class StatsSerde extends Serdes.WrapperSerde<Stats> {
-        StatsSerde() {
-            super(new JsonSerializer<>(), new JsonDeserializer<>());
-        }
-    }
-
-    public static Serde<Stats> Stats() {
-        StatsSerde serde = new StatsSerde();
-
-        Map<String, Object> serdeConfigs = new HashMap<>();
-        serdeConfigs.put(JsonDeserializer.VALUE_CLASS_NAME_CONFIG, Stats.class);
-        serde.configure(serdeConfigs, false);
-
-        return serde;
-    }
-
 }
 

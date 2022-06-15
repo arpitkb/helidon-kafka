@@ -1,49 +1,33 @@
 package com.github.arpitkb.service.serdes;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Serializer;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-/**
- * Json Serializer
- */
 public class JsonSerializer<T> implements Serializer<T> {
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    public JsonSerializer() {
-
-    }
+    private final Gson gson = new GsonBuilder().create();
+    public JsonSerializer() {}
 
     @Override
-    public void configure(Map<String, ?> config, boolean isKey) {
-        //Nothing to Configure
-    }
+    public void configure(Map<String, ?> props, boolean isKey) {}
 
-    /**
-     * Serialize JsonNode
-     *
-     * @param topic Kafka topic name
-     * @param data  data as JsonNode
-     * @return byte[]
-     */
     @Override
     public byte[] serialize(String topic, T data) {
-        if (data == null) {
+        if (data == null)
             return null;
-        }
+
         try {
-            return objectMapper.writeValueAsBytes(data);
+            return gson.toJson(data).getBytes(StandardCharsets.UTF_8);
         } catch (Exception e) {
             throw new SerializationException("Error serializing JSON message", e);
         }
     }
 
     @Override
-    public void close() {
+    public void close() {}
 
-    }
 }
-

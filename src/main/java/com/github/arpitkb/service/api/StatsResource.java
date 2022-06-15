@@ -19,8 +19,6 @@ import java.util.ArrayList;
 @ApplicationScoped
 public class StatsResource {
 
-//    private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
-
     private final StatsRepository statsRepository;
 
     /**
@@ -28,6 +26,7 @@ public class StatsResource {
      */
 
     private Consumer consumer;
+
 
     @Inject
     public StatsResource(Consumer consumer, StatsRepository statsRepository){

@@ -1,6 +1,5 @@
 package com.github.arpitkb.service.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ public class NodeInstance {
     public List<String> stack = new ArrayList<>();
     public String name;
     public Object item;
-
     public NodeStatus status;
     public String start;
     public Long startEpochMs;
@@ -62,7 +60,6 @@ public class NodeInstance {
     public boolean proxy = false;
     public List<String> from = new ArrayList<>();
 
-    @JsonProperty("catch")
     public List<String> catchNodes = new ArrayList<>();
 
 //    public ForeachInstance foreach;
