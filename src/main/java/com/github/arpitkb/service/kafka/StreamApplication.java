@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Properties;
@@ -81,13 +82,18 @@ public class StreamApplication{
 
     }
 
-        public void run(){
+        public void startStream(){
             try{
                 kafkaStreams.start();
             }catch (final Throwable e){
                 System.exit(1);
             }
         }
+
+    @PreDestroy
+    public void cleanUp(){
+        kafkaStreams.close();
+    }
 }
 
 

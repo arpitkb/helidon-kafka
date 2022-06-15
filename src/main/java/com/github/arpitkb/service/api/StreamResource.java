@@ -36,7 +36,7 @@ public class StreamResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMessage() throws IOException {
 
-        this.streamApplication.run();
+        this.streamApplication.startStream();
 
         JsonObject entity =  JSON.createObjectBuilder()
                 .add("message", "kafka stream started successfully")
