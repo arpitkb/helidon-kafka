@@ -1,7 +1,5 @@
 package com.github.arpitkb.service.api;
 
-import com.github.arpitkb.service.kafka.StreamApplication;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -25,18 +23,11 @@ public class StreamResource {
      * Kafka consumer
      */
 
-    private StreamApplication streamApplication;
-
-    @Inject
-    public StreamResource( StreamApplication streamApplication){
-        this.streamApplication=streamApplication;
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMessage() throws IOException {
 
-        this.streamApplication.startStream();
+//        this.streamApplication.startStream();
 
         JsonObject entity =  JSON.createObjectBuilder()
                 .add("message", "kafka stream started successfully")

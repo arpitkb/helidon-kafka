@@ -2,6 +2,7 @@ package com.github.arpitkb.service.api;
 
 
 import com.github.arpitkb.service.kafka.Consumer;
+import com.github.arpitkb.service.kafka.StreamApplication;
 import com.github.arpitkb.service.model.Stats;
 import com.github.arpitkb.service.utils.StatsRepository;
 

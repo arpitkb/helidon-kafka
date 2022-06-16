@@ -1,7 +1,11 @@
 package com.github.arpitkb.service;
 
+import com.github.arpitkb.service.kafka.StreamApplication;
 import io.helidon.config.Config;
 import io.helidon.microprofile.server.Server;
+import org.apache.kafka.common.protocol.types.Field;
+
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import static io.helidon.config.ConfigSources.classpath;
 
@@ -9,7 +13,9 @@ public final class MainService {
 
     private MainService() { }
 
+
     public static void main(final String[] args) throws IOException {
+
         Server server = startServer();
         System.out.println("http://localhost:" + server.port());
     }

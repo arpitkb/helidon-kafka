@@ -29,7 +29,7 @@ public class Producer {
         KafkaProducer<String, NodeInstance> producer=new KafkaProducer<>(properties);
 
 
-        for(int i=0;i<10000;i++){
+        for(int i=0;i<100000;i++){
             int rand = 1+(int)Math.floor(Math.random()*10);
             int rand2 = (int)Math.floor(Math.random()*2);
 

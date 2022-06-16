@@ -2,12 +2,7 @@
 package com.github.arpitkb.service;
 
 import javax.inject.Inject;
-import javax.json.JsonObject;
 import javax.ws.rs.client.WebTarget;
-
-import javax.ws.rs.core.Response;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import io.helidon.microprofile.tests.junit5.HelidonTest;
@@ -20,7 +15,6 @@ class MainTest {
 
     @Test
     void testHelloWorld() {
-        Assertions.assertEquals("Hello World!", "Hello World!",
-                "default message");
+
     }
 }
